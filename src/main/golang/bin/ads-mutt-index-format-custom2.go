@@ -129,7 +129,7 @@ var _RE_EXPECTED_PATTERN = regexp.MustCompile( `` +
 
 
 // FIXME: Get this from a config file or something; maybe find a way to have mutt hand us the list of 'alternate' names?
-var gl_ignorable_nonlists = [...]string{ `ads` }
+var gl_ignorable_nonlists = [...]string{ `INBOX`, `ads` }
 
 
 func main() {
