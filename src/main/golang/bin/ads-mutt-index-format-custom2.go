@@ -107,7 +107,10 @@ const _BE_VERBOSE = false
 //
 var _RE_EXPECTED_PATTERN = regexp.MustCompile( `` +
 
-    `^(.*[[:space:]]{1,})([[]S:)(` +
+    `^([[:space:]]*[[:digit:]]{1,}[[:space:]]{1,}[^[]{1,})` +  // capture group 1
+    `([[]S:)` +                                                // capture group 2
+    `(` +                                                      // capture group 3 (start of)
+
     `[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}` +
     `)(` +
     `:[[:digit:]]{1,2}` +
