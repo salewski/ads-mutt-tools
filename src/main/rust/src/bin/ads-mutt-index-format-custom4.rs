@@ -24,5 +24,12 @@
 use std::env;
 
 fn main() {
+
+    // FIXME: maybe use OsString, instead, to allow for data in busted encoding on input
+    //
+    let args: Vec<String> = env::args().collect();
+
+    let orig_string = &args[1];
+
     println!("Hello, world!");
 }
