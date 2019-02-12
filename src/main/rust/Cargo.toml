@@ -1,0 +1,6 @@
+[package]
+name = "ads-mutt-index-format-custom4"
+version = "0.1.0"
+authors = ["Alan D. Salewski <salewski@att.net>"]
+
+[dependencies]
