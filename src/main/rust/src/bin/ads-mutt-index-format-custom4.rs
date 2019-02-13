@@ -37,5 +37,7 @@ fn main() {
 
     let orig_string = &args[1];
 
+    let outp_string = String::new();
+
     println!("Hello, world!");
 }
