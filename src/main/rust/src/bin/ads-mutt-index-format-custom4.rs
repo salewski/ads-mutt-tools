@@ -23,11 +23,17 @@
 
 use std::env;
 
+const PROG: &str = "ads-mutt-index-format-custom4";
+
 fn main() {
 
     // FIXME: maybe use OsString, instead, to allow for data in busted encoding on input
     //
     let args: Vec<String> = env::args().collect();
+
+    if args.len() < 2 {
+        panic!( "{} (error): required mutt pager_format line not provided; bailing out\n", PROG );
+    }
 
     let orig_string = &args[1];
 
