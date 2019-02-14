@@ -21,6 +21,8 @@
 //! derived from both that bash script and the earlier
 //! `ads-mutt-index-format-custom3` golang program.
 
+extern crate regex;
+
 use std::env;
 
 const PROG: &str = "ads-mutt-index-format-custom4";
