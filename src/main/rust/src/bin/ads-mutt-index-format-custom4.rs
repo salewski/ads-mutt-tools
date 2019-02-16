@@ -28,6 +28,8 @@ extern crate lazy_static;
 
 use std::env;
 
+use std::vec::Vec;
+
 use regex::Regex;
 
 const PROG: &str = "ads-mutt-index-format-custom4";
