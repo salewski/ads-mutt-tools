@@ -25,6 +25,8 @@ extern crate regex;
 
 use std::env;
 
+use regex::Regex;
+
 const PROG: &str = "ads-mutt-index-format-custom4";
 
 fn main() {
