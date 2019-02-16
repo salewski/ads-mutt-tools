@@ -28,6 +28,8 @@ extern crate lazy_static;
 
 use std::env;
 
+use std::string::String;
+
 use std::vec::Vec;
 
 use regex::Regex;
