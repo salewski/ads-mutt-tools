@@ -23,9 +23,14 @@
 
 extern crate regex;
 
+#[macro_use]
+extern crate lazy_static;
+
 use std::env;
 
 use regex::Regex;
+
+
 
 const PROG: &str = "ads-mutt-index-format-custom4";
 
