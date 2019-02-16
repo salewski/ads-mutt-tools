@@ -39,26 +39,27 @@ const PROG: &str = "ads-mutt-index-format-custom4";
 //
 lazy_static! {
     static ref RE_EXPECTED_PATTERN: Regex
-        = Regex::new( r##"\
-            ^([[:space:]]*[[:digit:]]{1,}[[:space:]]{1,}[^[]{1,})\
-            ([[]S:)\
-            (\
-\
-            [[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}\
-            )(\
-            :[[:digit:]]{1,2}\
-            []]\
-            [[:space:]]{1,}\
-            )(\
-            [[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}\
-            )(\
-            :[[:digit:]]{1,2}[[:space:]]{1,}\
-            )\
-            [[]LIST:\
-            ([[:space:]]*[^]]{1,})\
-            []]\
-            (\
-            [[:space:]]{1,}.*)\
+        = Regex::new( r##"(?x)  # enable "significant whitespace" mode
+
+            ^([[:space:]]*[[:digit:]]{1,}[[:space:]]{1,}[^\[]{1,})  # capture group 1
+            ([\[]S:)                                                # capture group 2
+            (                                                       # capture group 3 (start of)
+
+            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}
+            )(
+            :[[:digit:]]{1,2}
+            []]
+            [[:space:]]{1,}
+            )(
+            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}
+            )(
+            :[[:digit:]]{1,2}[[:space:]]{1,}
+            )
+            [\[]LIST:
+            ([[:space:]]*[^]]{1,})
+            []]
+            (
+            [[:space:]]{1,}.*)
         "## ).unwrap();
 }
 
@@ -75,6 +76,13 @@ fn main() {
     let orig_string = &args[1];
 
     let outp_string = String::new();
+
+    if ! RE_EXPECTED_PATTERN.is_match( orig_string ) {
+
+        eprintln!( "{} (warning): input line did not match regex; passing through unchanged\n", PROG );
+
+        println!( "{}", orig_string );
+    }
 
     println!("Hello, world!");
 }
