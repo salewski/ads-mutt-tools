@@ -32,6 +32,10 @@ use regex::Regex;
 
 const PROG: &str = "ads-mutt-index-format-custom4";
 
+// static BE_VERBOSE: bool = false;
+static BE_VERBOSE: bool = true;
+
+
 // Our regex is compiled at most once per program execution, upon the first
 // dereference of RE_EXPECTED_PATTERN (which, in future versions, will not
 // ever happen when the user provides the '--help' or '--version' command line
