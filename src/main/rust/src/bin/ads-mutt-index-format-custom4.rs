@@ -85,13 +85,21 @@ fn main() {
 
     let outp_string = String::new();
 
-    if ! RE_EXPECTED_PATTERN.is_match( orig_string ) {
+    // if ! RE_EXPECTED_PATTERN.is_match( orig_string ) {
+    let captures = RE_EXPECTED_PATTERN.captures( orig_string );
+    match captures {
 
-        eprintln!( "{} (warning): input line did not match regex; passing through unchanged", PROG );
+        None => {
 
-        println!( "{}", orig_string );
+            eprintln!( "{} (warning): input line did not match regex; passing through unchanged", PROG );
 
-        return;
+            println!( "{}", orig_string );
+
+            return;
+        },
+
+        Some(x) => {
+        }
     }
 
     if BE_VERBOSE {
