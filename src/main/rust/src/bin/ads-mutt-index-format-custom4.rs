@@ -90,5 +90,9 @@ fn main() {
         return;
     }
 
+    if BE_VERBOSE {
+        eprintln!( "{} (info): input line matched regex", PROG );
+    }
+
     println!("Hello, world!");
 }
