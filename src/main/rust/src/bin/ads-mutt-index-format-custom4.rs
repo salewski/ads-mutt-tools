@@ -87,19 +87,20 @@ fn main() {
 
     // if ! RE_EXPECTED_PATTERN.is_match( orig_string ) {
     let captures = RE_EXPECTED_PATTERN.captures( orig_string );
-    match captures {
+    if captures.is_none() {
+    // match captures {
 
-        None => {
+    //     None => {
 
             eprintln!( "{} (warning): input line did not match regex; passing through unchanged", PROG );
 
             println!( "{}", orig_string );
 
             return;
-        },
+        // },
 
-        Some(x) => {
-        }
+        // Some( caps ) => {
+        // }
     }
 
     if BE_VERBOSE {
