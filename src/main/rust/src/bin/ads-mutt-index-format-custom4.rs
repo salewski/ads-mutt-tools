@@ -32,6 +32,7 @@ use std::string::String;
 
 use std::vec::Vec;
 
+use regex::Captures;
 use regex::Regex;
 
 const PROG: &str = "ads-mutt-index-format-custom4";
@@ -94,10 +95,30 @@ fn main() {
 
         return;
     }
+    // captures is known to be Some(v) here (that is, it is known to not be None)
 
     if BE_VERBOSE {
         eprintln!( "{} (info): input line matched regex", PROG );
     }
+
+    let caps: Captures = captures.unwrap();
+
+    let whatev1 = &caps[1];
+    let whatev2 = &caps[2];     // "[S:"
+
+    let dt_lft  = &caps[3];
+
+    let whatev3 = &caps[4];     // seconds portion of left-hand date, closing bracket, plus spaces
+
+    let dt_rit  = &caps[5];
+
+    let whatev4 = &caps[6];     // seconds portion of right-hand date, closing bracket, plus spaces
+
+    let listnm_raw = &caps[7];  // list name (or mail file name, such as 'ads'), possibly surrounded by whitespace
+
+    let whatev5 = &caps[8];     // the rest of the index format line
+
+
 
     println!("Hello, world!");
 }
