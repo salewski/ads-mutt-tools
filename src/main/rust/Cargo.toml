@@ -5,3 +5,9 @@ authors = ["Alan D. Salewski <salewski@att.net>"]
 
 [dependencies]
 regex = "1.1.0"
+
+# Strictly speaking, we don't really /need/ lazy_static in this program at
+# this time. But once we add '--help' and '--version' command line opts, then
+# the pattern established by using the lazy_static! declaration will be the
+# general pattern we'll want to use going forward.
+lazy_static = "1.2.0"
