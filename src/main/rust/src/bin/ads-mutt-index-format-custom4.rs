@@ -30,9 +30,37 @@ use std::env;
 
 use regex::Regex;
 
-
-
 const PROG: &str = "ads-mutt-index-format-custom4";
+
+// Our regex is compiled at most once per program execution, upon the first
+// dereference of RE_EXPECTED_PATTERN (which, in future versions, will not
+// ever happen when the user provides the '--help' or '--version' command line
+// options).
+//
+lazy_static! {
+    static ref RE_EXPECTED_PATTERN: Regex
+        = Regex::new( r##"\
+            ^([[:space:]]*[[:digit:]]{1,}[[:space:]]{1,}[^[]{1,})\
+            ([[]S:)\
+            (\
+\
+            [[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}\
+            )(\
+            :[[:digit:]]{1,2}\
+            []]\
+            [[:space:]]{1,}\
+            )(\
+            [[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}\
+            )(\
+            :[[:digit:]]{1,2}[[:space:]]{1,}\
+            )\
+            [[]LIST:\
+            ([[:space:]]*[^]]{1,})\
+            []]\
+            (\
+            [[:space:]]{1,}.*)\
+        "## ).unwrap();
+}
 
 fn main() {
 
