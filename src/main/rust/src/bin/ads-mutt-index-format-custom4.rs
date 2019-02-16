@@ -70,7 +70,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {
-        panic!( "{} (error): required mutt pager_format line not provided; bailing out\n", PROG );
+        panic!( "{} (error): required mutt pager_format line not provided; bailing out", PROG );
     }
 
     let orig_string = &args[1];
@@ -79,9 +79,11 @@ fn main() {
 
     if ! RE_EXPECTED_PATTERN.is_match( orig_string ) {
 
-        eprintln!( "{} (warning): input line did not match regex; passing through unchanged\n", PROG );
+        eprintln!( "{} (warning): input line did not match regex; passing through unchanged", PROG );
 
         println!( "{}", orig_string );
+
+        return;
     }
 
     println!("Hello, world!");
