@@ -133,11 +133,6 @@ fn main() {
         str_with_olength.push_str( dt_lft  );
         str_with_olength.push_str( whatev3 );  // full string segment we'll be replacing
 
-        // let str_with_olength = String::from( *whatev2 + *dt_lft + *whatev3 );
-        // str_with_olength.push_str( whatev2 );
-        // str_with_olength.push_str( dt_lft  );
-        // str_with_olength.push_str( whatev3 );  // full string segment we'll be replacing
-
         let count_of_needed_spaces = UnicodeSegmentation::graphemes( str_with_olength.as_str(),
                                                                      true /* extended grapheme clustes? (as opposed to "legacy grapheme clusters") */ )
                                     .count();
