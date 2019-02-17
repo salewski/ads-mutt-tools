@@ -22,6 +22,7 @@
 //! `ads-mutt-index-format-custom3` golang program.
 
 extern crate regex;
+extern crate unicode_segmentation;
 
 #[macro_use]
 extern crate lazy_static;
@@ -34,6 +35,13 @@ use std::vec::Vec;
 
 use regex::Captures;
 use regex::Regex;
+
+// See:
+//     https://github.com/unicode-rs/unicode-segmentation
+//     https://unicode-rs.github.io/unicode-segmentation/unicode_segmentation/index.html
+//     https://crates.io/crates/unicode-segmentation
+//
+use unicode_segmentation::UnicodeSegmentation;
 
 const PROG: &str = "ads-mutt-index-format-custom4";
 
@@ -118,6 +126,41 @@ fn main() {
 
     let whatev5 = &caps[8];     // the rest of the index format line
 
+    if dt_lft == dt_rit {
+
+        let mut str_with_olength = String::with_capacity( whatev2.len() + dt_lft.len() + whatev3.len() );
+        str_with_olength.push_str( whatev2 );
+        str_with_olength.push_str( dt_lft  );
+        str_with_olength.push_str( whatev3 );  // full string segment we'll be replacing
+
+        // let str_with_olength = String::from( *whatev2 + *dt_lft + *whatev3 );
+        // str_with_olength.push_str( whatev2 );
+        // str_with_olength.push_str( dt_lft  );
+        // str_with_olength.push_str( whatev3 );  // full string segment we'll be replacing
+
+        let count_of_needed_spaces = UnicodeSegmentation::graphemes( str_with_olength.as_str(),
+                                                                     true /* extended grapheme clustes? (as opposed to "legacy grapheme clusters") */ )
+                                    .count();
+
+//         outp_string += fmt.Sprintf( `%s%*s%s%s`, whatev1, count_of_needed_spaces, ``, dt_rit, whatev4 )
+
+// // // DEBUG go
+// //         fmt.Printf( "O:%s\n", orig_string )
+// //         fmt.Printf( "N:%s\n", outp_string  )
+// // // DEBUG end
+//     } else {
+
+//         // The dates are different, so "pass through" date values unchanged
+
+//         if _BE_VERBOSE {
+//             fmt.Fprintf( os.Stderr, "%s (info): dates are different; passing through unchanged\n", _PROG )
+//         }
+
+//         // Reconstruct original input string through the right-hand date portion.
+//         outp_string += fmt.Sprintf( `%s%s%s%s%s%s`, whatev1, whatev2, dt_lft, whatev3, dt_rit, whatev4 )
+
+//         // fmt.Println( orig_string )
+    }
 
 
     println!("Hello, world!");
