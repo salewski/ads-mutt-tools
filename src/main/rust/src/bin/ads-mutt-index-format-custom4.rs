@@ -133,8 +133,21 @@ fn main() {
         str_with_olength.push_str( dt_lft  );
         str_with_olength.push_str( whatev3 );  // full string segment we'll be replacing
 
+        // CAREFUL: We need to count the graphemes in str_with_olength, not
+        //          the number of bytes (would only happen to give the correct
+        //          count if the text content happened to be all 7-bit ASCII)
+        //          or even the number of chars (would be incorrect when
+        //          combining chars are present, or bytes from scripts that
+        //          are not considered combining by Unicode but which
+        //          nevertheless rely on character composition).
+        //
+        //          See also:
+        //
+        //              • "Dark corners of Unicode", especially the section "Combining characters and character width":
+        //                https://eev.ee/blog/2015/09/12/dark-corners-of-unicode/
+        //
         let count_of_needed_spaces = UnicodeSegmentation::graphemes( str_with_olength.as_str(),
-                                                                     true /* extended grapheme clustes? (as opposed to "legacy grapheme clusters") */ )
+                                                                     true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
                                     .count();
 
 //         outp_string += fmt.Sprintf( `%s%*s%s%s`, whatev1, count_of_needed_spaces, ``, dt_rit, whatev4 )
