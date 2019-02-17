@@ -26,4 +26,8 @@ lazy_static = "1.2.0"
 #     https://internals.rust-lang.org/t/support-for-grapheme-clusters-in-std/7339/6
 #     https://github.com/rust-lang/rust/issues/7043
 #
+#     https://users.rust-lang.org/t/where-did-str-graphemes-go/7817/3
+#     https://doc.rust-lang.org/1.3.0/std/primitive.str.html#method.graphemes
+#     https://github.com/rust-lang/rust/commit/8d90d3f36871a00023cc1f313f91e351c287ca15
+#
 unicode-segmentation = "1.2.0"
