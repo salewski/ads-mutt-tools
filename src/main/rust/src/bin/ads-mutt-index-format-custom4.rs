@@ -143,8 +143,11 @@ fn main() {
         //
         //          See also:
         //
-        //              • "Dark corners of Unicode", especially the section "Combining characters and character width":
+        //              • "Dark corners of Unicode" by Eevee, especially the section "Combining characters and character width":
         //                https://eev.ee/blog/2015/09/12/dark-corners-of-unicode/
+        //
+        //              • "Let’s Stop Ascribing Meaning to Code Points" by Manish Goregaokar
+        //                https://manishearth.github.io/blog/2017/01/14/stop-ascribing-meaning-to-unicode-code-points/
         //
         let count_of_needed_spaces = UnicodeSegmentation::graphemes( str_with_olength.as_str(),
                                                                      true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
