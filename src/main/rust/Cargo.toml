@@ -10,4 +10,20 @@ regex = "1.1.0"
 # this time. But once we add '--help' and '--version' command line opts, then
 # the pattern established by using the lazy_static! declaration will be the
 # general pattern we'll want to use going forward.
+#
 lazy_static = "1.2.0"
+
+# The Rust standard library has fine support for Unicode, and in particular
+# UTF-8 encoding (so can handle byte sequences of both valid and invalid
+# UTF-8, and it also provides support for Unicode "characters"). But the
+# higher-level concept of processing grapheme clusters is currently left to
+# external crates.
+#
+# See also:
+#     https://github.com/unicode-rs/unicode-segmentation
+#     https://unicode-rs.github.io/unicode-segmentation/unicode_segmentation/index.html
+#     https://crates.io/crates/unicode-segmentation
+#     https://internals.rust-lang.org/t/support-for-grapheme-clusters-in-std/7339/6
+#     https://github.com/rust-lang/rust/issues/7043
+#
+unicode-segmentation = "1.2.0"
