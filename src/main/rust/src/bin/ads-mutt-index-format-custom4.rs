@@ -227,17 +227,18 @@ fn main() {
 
         outp_string.push_str( &format!( "[{}]{:width$}", listnm, "", width=remaining_listnm_spaces ));
     }
-    // else
-// {
+    else
+    {
+        // Here we are suppressing the value in the list name field. We do this
+        // simply by emitting the appropriate number of SPACE characters.
+        //
+        //     O:23666  N    [S:2015-10-26 12:55:52]  2015-10-26 12:55:52  [LIST: ads             ]  sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
+        //     N:23666  N                             2015-10-26 12:55:52                       sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
+        //
+        // outp_string += fmt.Sprintf( `%*s`, needed_listnm_spaces, `` )
 
-//         // Here we are suppressing the value in the list name field. We do this
-//         // simply by emitting the appropriate number of SPACE characters.
-//         //
-//         //     O:23666  N    [S:2015-10-26 12:55:52]  2015-10-26 12:55:52  [LIST: ads             ]  sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
-//         //     N:23666  N                             2015-10-26 12:55:52                       sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
-//         //
-//         outp_string += fmt.Sprintf( `%*s`, needed_listnm_spaces, `` )
-//     }
+        outp_string.push_str( &format!( "{:width$}", "", width=needed_listnm_spaces ));
+    }
 
 //     // Tack back on the remainder of the index format line that does not require any special handling
 //     outp_string += fmt.Sprintf( `%s`, whatev5 )
