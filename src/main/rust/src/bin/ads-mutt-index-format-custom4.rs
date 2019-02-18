@@ -191,8 +191,6 @@ fn main() {
     // the '[' and ']' brackets that we omitted in our regex capturing above (hence
     // the plus two here).
     //
-    // let needed_listnm_spaces = ( 2 + utf8.RuneCountInString( listnm_raw ) )
-
     let needed_listnm_spaces = 2 + UnicodeSegmentation::graphemes( listnm_raw,
                                                                    true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
                                    .count();
