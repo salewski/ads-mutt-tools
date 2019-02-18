@@ -45,8 +45,8 @@ use unicode_segmentation::UnicodeSegmentation;
 
 const PROG: &str = "ads-mutt-index-format-custom4";
 
-// static BE_VERBOSE: bool = false;
-static BE_VERBOSE: bool = true;
+static BE_VERBOSE: bool = false;
+// static BE_VERBOSE: bool = true;
 
 
 // Our regex is compiled at most once per program execution, upon the first
@@ -238,10 +238,10 @@ fn main() {
     // Tack back on the remainder of the index format line that does not require any special handling
     outp_string.push_str( whatev5 );
 
-// DEBUG go
-    eprintln!( "O:{}", orig_string );
-    eprintln!( "N:{}", outp_string );
-// DEBUG end
+// // DEBUG go
+//     eprintln!( "O:{}", orig_string );
+//     eprintln!( "N:{}", outp_string );
+// // DEBUG end
 
     println!( "{}", outp_string );
 }
