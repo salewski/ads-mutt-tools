@@ -92,8 +92,6 @@ fn main() {
 
     let orig_string = &args[1];
 
-    let outp_string = String::new();
-
     let captures = RE_EXPECTED_PATTERN.captures( orig_string );
     if captures.is_none() {
 
@@ -126,6 +124,8 @@ fn main() {
 
     let whatev5 = &caps[8];     // the rest of the index format line
 
+    let mut outp_string = String::with_capacity( orig_string.len() );
+
     if dt_lft == dt_rit {
 
         let mut str_with_olength = String::with_capacity( whatev2.len() + dt_lft.len() + whatev3.len() );
@@ -153,7 +153,11 @@ fn main() {
                                                                      true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
                                     .count();
 
-//         outp_string += fmt.Sprintf( `%s%*s%s%s`, whatev1, count_of_needed_spaces, ``, dt_rit, whatev4 )
+        // outp_string.push_str( format!( "%s%*s%s%s`, whatev1, count_of_needed_spaces, ``, dt_rit, whatev4 )
+        // outp_string.push_str( &format!( "{}{:2$}{}{}", whatev1, "", count_of_needed_spaces, dt_rit, whatev4 ) );
+        // outp_string.push_str( format!( "{}", whatev1 ).as_str() );
+        // outp_string.push_str( &format!( "{}", whatev1 ) );
+        outp_string.push_str( &format!( "{}{}", whatev1, "" ) );
 
 // // // DEBUG go
 // //         fmt.Printf( "O:%s\n", orig_string )
