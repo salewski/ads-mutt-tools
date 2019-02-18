@@ -181,10 +181,10 @@ fn main() {
 
     }
 
-// DEBUG go
-    eprintln!( "O:{}", orig_string );
-    eprintln!( "N:{}", outp_string );
-// DEBUG end
+// // DEBUG go
+//     eprintln!( "O:{}", orig_string );
+//     eprintln!( "N:{}", outp_string );
+// // DEBUG end
 
     // The number of spaces that the list name field should take in total, including
     // the '[' and ']' brackets that we omitted in our regex capturing above (hence
@@ -238,14 +238,10 @@ fn main() {
     // Tack back on the remainder of the index format line that does not require any special handling
     outp_string.push_str( whatev5 );
 
-// // // DEBUG go
-// //     fmt.Fprintf( os.Stderr, "O:%s\n", orig_string )
-// //     fmt.Fprintf( os.Stderr, "N:%s\n", outp_string )
-// // // DEBUG end
+// DEBUG go
+    eprintln!( "O:{}", orig_string );
+    eprintln!( "N:{}", outp_string );
+// DEBUG end
 
-//     fmt.Println( outp_string )
-
-
-
-    println!("Hello, world!");
+    println!( "{}", outp_string );
 }
