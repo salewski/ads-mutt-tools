@@ -193,7 +193,7 @@ fn main() {
                                                                      true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
                                    .count();
 
-    // listnm := strings.TrimSpace( listnm_raw )
+    let listnm = listnm_raw.trim();
 
     // keep_listnm := true
     // for _, one_nonlist := range gl_ignorable_nonlists {
