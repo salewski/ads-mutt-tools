@@ -194,10 +194,10 @@ fn main() {
     // let needed_listnm_spaces = ( 2 + utf8.RuneCountInString( listnm_raw ) )
 
     let needed_listnm_spaces = 2 + UnicodeSegmentation::graphemes( listnm_raw,
-                                                                     true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
+                                                                   true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
                                    .count();
 
-    let listnm = listnm_raw.trim();
+    let listnm: &str = listnm_raw.trim();
 
     let mut keep_listnm = true;
     for &one_nonlist in &IGNORABLE_NONLISTS {
