@@ -126,8 +126,8 @@ fn main() {
 
     let mut outp_string = String::with_capacity( orig_string.len() );
 
-    if dt_lft == dt_rit {
-
+    if dt_lft == dt_rit
+    {
         let mut str_with_olength = String::with_capacity( whatev2.len() + dt_lft.len() + whatev3.len() );
         str_with_olength.push_str( whatev2 );
         str_with_olength.push_str( dt_lft  );
@@ -157,24 +157,52 @@ fn main() {
         // parameters, hence the ordering...
         outp_string.push_str( &format!( "{}{:width$}{}{}", whatev1, "", dt_rit, whatev4,
                                         width=count_of_needed_spaces ) );
-
-// // // DEBUG go
-// //         fmt.Printf( "O:%s\n", orig_string )
-// //         fmt.Printf( "N:%s\n", outp_string  )
-// // // DEBUG end
-//     } else {
-
-//         // The dates are different, so "pass through" date values unchanged
-
-//         if _BE_VERBOSE {
-//             fmt.Fprintf( os.Stderr, "%s (info): dates are different; passing through unchanged\n", _PROG )
-//         }
-
-//         // Reconstruct original input string through the right-hand date portion.
-//         outp_string += fmt.Sprintf( `%s%s%s%s%s%s`, whatev1, whatev2, dt_lft, whatev3, dt_rit, whatev4 )
-
-//         // fmt.Println( orig_string )
     }
+    else
+    {
+        // The dates are different, so "pass through" date values unchanged
+
+        if BE_VERBOSE {
+            eprintln!( "{} (info): dates are different; passing through unchanged", PROG );
+        }
+
+        // Reconstruct original input string through the right-hand date portion.
+        // outp_string += fmt.Sprintf( `%s%s%s%s%s%s`, whatev1, whatev2, dt_lft, whatev3, dt_rit, whatev4 )
+
+        outp_string.push_str( whatev1 );
+        outp_string.push_str( whatev2 );
+        outp_string.push_str( dt_lft  );
+        outp_string.push_str( whatev3 );
+        outp_string.push_str( dt_rit  );
+        outp_string.push_str( whatev4 );
+
+    }
+
+// DEBUG go
+    eprintln!( "O:{}", orig_string );
+    eprintln!( "N:{}", outp_string );
+// DEBUG end
+
+    // The number of spaces that the list name field should take in total, including
+    // the '[' and ']' brackets that we omitted in our regex capturing above (hence
+    // the plus two here).
+    //
+    // let needed_listnm_spaces = ( 2 + utf8.RuneCountInString( listnm_raw ) )
+
+    let needed_listnm_spaces = 2 + UnicodeSegmentation::graphemes( listnm_raw,
+                                                                     true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
+                                   .count();
+
+    // listnm := strings.TrimSpace( listnm_raw )
+
+    // keep_listnm := true
+    // for _, one_nonlist := range gl_ignorable_nonlists {
+    //     if one_nonlist == listnm {
+    //         keep_listnm = false
+    //         break
+    //     }
+    // }
+
 
 
     println!("Hello, world!");
