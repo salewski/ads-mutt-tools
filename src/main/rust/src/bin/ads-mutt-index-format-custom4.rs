@@ -205,6 +205,50 @@ fn main() {
         }
     }
 
+    if true == keep_listnm {
+
+        // Even if we keep the list name, we reformat the field to make the closing
+        // right-hand bracket come right after the list name value, but we still
+        // append the appropriate number of trailing SPACE characters to use
+        // whatever field length we observed with our input, minus the length of the
+        // 'LIST:' landmark token.
+        //
+        //     O:23666  N    [S:2015-10-26 12:55:52]  2015-10-26 12:55:52  [LIST: ads             ]  sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
+        //     N:23666  N                             2015-10-26 12:55:52  [ads]                sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
+        //
+        // remaining_listnm_spaces := ( needed_listnm_spaces - len( listnm ) - 2 )  // minus 2 because we are supplying the '[' and ']' brackets here
+        let remaining_listnm_spaces = needed_listnm_spaces
+                                      - UnicodeSegmentation::graphemes( listnm,
+                                                                        true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
+                                        .count()
+                                      - 2;  // minus 2 because we are supplying the '[' and ']' brackets here
+
+        // outp_string += fmt.Sprintf( `[%s]%*s`, listnm, remaining_listnm_spaces, `` )
+
+        outp_string.push_str( &format!( "[{}]{:width$}", listnm, "", width=remaining_listnm_spaces ));
+    }
+    // else
+// {
+
+//         // Here we are suppressing the value in the list name field. We do this
+//         // simply by emitting the appropriate number of SPACE characters.
+//         //
+//         //     O:23666  N    [S:2015-10-26 12:55:52]  2015-10-26 12:55:52  [LIST: ads             ]  sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
+//         //     N:23666  N                             2015-10-26 12:55:52                       sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
+//         //
+//         outp_string += fmt.Sprintf( `%*s`, needed_listnm_spaces, `` )
+//     }
+
+//     // Tack back on the remainder of the index format line that does not require any special handling
+//     outp_string += fmt.Sprintf( `%s`, whatev5 )
+
+// // // DEBUG go
+// //     fmt.Fprintf( os.Stderr, "O:%s\n", orig_string )
+// //     fmt.Fprintf( os.Stderr, "N:%s\n", outp_string )
+// // // DEBUG end
+
+//     fmt.Println( outp_string )
+
 
 
     println!("Hello, world!");
