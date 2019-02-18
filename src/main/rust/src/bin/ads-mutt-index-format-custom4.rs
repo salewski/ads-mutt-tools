@@ -80,6 +80,10 @@ lazy_static! {
         "## ).unwrap();
 }
 
+// FIXME: Get this from a config file or something; maybe find a way to have mutt hand us the list of 'alternate' names?
+const IGNORABLE_NONLISTS: [&'static str; 2] = [ "INBOX", "ads" ];
+
+
 fn main() {
 
     // FIXME: maybe use OsString, instead, to allow for data in busted encoding on input
@@ -195,13 +199,13 @@ fn main() {
 
     let listnm = listnm_raw.trim();
 
-    // keep_listnm := true
-    // for _, one_nonlist := range gl_ignorable_nonlists {
-    //     if one_nonlist == listnm {
-    //         keep_listnm = false
-    //         break
-    //     }
-    // }
+    let mut keep_listnm = true;
+    for &one_nonlist in &IGNORABLE_NONLISTS {
+        if one_nonlist == listnm {
+            keep_listnm = false;
+            break
+        }
+    }
 
 
 
