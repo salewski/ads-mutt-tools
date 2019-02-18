@@ -81,7 +81,7 @@ lazy_static! {
 }
 
 // FIXME: Get this from a config file or something; maybe find a way to have mutt hand us the list of 'alternate' names?
-const IGNORABLE_NONLISTS: [&'static str; 2] = [ "INBOX", "ads" ];
+const IGNORABLE_NONLISTS: [&'static str; 2] = [ "INBOX", "ads" ];  // '
 
 
 fn main() {
@@ -171,8 +171,7 @@ fn main() {
         }
 
         // Reconstruct original input string through the right-hand date portion.
-        // outp_string += fmt.Sprintf( `%s%s%s%s%s%s`, whatev1, whatev2, dt_lft, whatev3, dt_rit, whatev4 )
-
+        //
         outp_string.push_str( whatev1 );
         outp_string.push_str( whatev2 );
         outp_string.push_str( dt_lft  );
@@ -223,8 +222,6 @@ fn main() {
                                         .count()
                                       - 2;  // minus 2 because we are supplying the '[' and ']' brackets here
 
-        // outp_string += fmt.Sprintf( `[%s]%*s`, listnm, remaining_listnm_spaces, `` )
-
         outp_string.push_str( &format!( "[{}]{:width$}", listnm, "", width=remaining_listnm_spaces ));
     }
     else
@@ -235,14 +232,10 @@ fn main() {
         //     O:23666  N    [S:2015-10-26 12:55:52]  2015-10-26 12:55:52  [LIST: ads             ]  sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
         //     N:23666  N                             2015-10-26 12:55:52                       sender@example.com             (b:   1.3K; l:   144)     blah blah blah some random subject
         //
-        // outp_string += fmt.Sprintf( `%*s`, needed_listnm_spaces, `` )
-
         outp_string.push_str( &format!( "{:width$}", "", width=needed_listnm_spaces ));
     }
 
     // Tack back on the remainder of the index format line that does not require any special handling
-    // outp_string += fmt.Sprintf( `%s`, whatev5 )
-
     outp_string.push_str( whatev5 );
 
 // // // DEBUG go
