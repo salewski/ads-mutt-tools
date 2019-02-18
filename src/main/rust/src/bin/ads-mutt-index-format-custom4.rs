@@ -153,11 +153,10 @@ fn main() {
                                                                      true /* extended grapheme clusters? (as opposed to "legacy grapheme clusters") */ )
                                     .count();
 
-        // outp_string.push_str( format!( "%s%*s%s%s`, whatev1, count_of_needed_spaces, ``, dt_rit, whatev4 )
-        // outp_string.push_str( &format!( "{}{:2$}{}{}", whatev1, "", count_of_needed_spaces, dt_rit, whatev4 ) );
-        // outp_string.push_str( format!( "{}", whatev1 ).as_str() );
-        // outp_string.push_str( &format!( "{}", whatev1 ) );
-        outp_string.push_str( &format!( "{}{}", whatev1, "" ) );
+        // Note that position parameters to format! cannot come after named
+        // parameters, hence the ordering...
+        outp_string.push_str( &format!( "{}{:width$}{}{}", whatev1, "", dt_rit, whatev4,
+                                        width=count_of_needed_spaces ) );
 
 // // // DEBUG go
 // //         fmt.Printf( "O:%s\n", orig_string )
