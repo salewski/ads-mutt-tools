@@ -240,8 +240,10 @@ fn main() {
         outp_string.push_str( &format!( "{:width$}", "", width=needed_listnm_spaces ));
     }
 
-//     // Tack back on the remainder of the index format line that does not require any special handling
-//     outp_string += fmt.Sprintf( `%s`, whatev5 )
+    // Tack back on the remainder of the index format line that does not require any special handling
+    // outp_string += fmt.Sprintf( `%s`, whatev5 )
+
+    outp_string.push_str( whatev5 );
 
 // // // DEBUG go
 // //     fmt.Fprintf( os.Stderr, "O:%s\n", orig_string )
