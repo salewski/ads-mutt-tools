@@ -1,5 +1,5 @@
 //!
-//! Copyright (c) 2019 Alan D. Salewski <salewski@att.net>
+//! Copyright (c) 2019, 2021 Alan D. Salewski <ads@salewski.email>
 //!
 //!     This program is free software; you can redistribute it and/or modify
 //!     it under the terms of the GNU General Public License as published by
@@ -55,28 +55,86 @@ static BE_VERBOSE: bool = false;
 // options).
 //
 lazy_static! {
+
+    // UPDATE (2021-01-08): This is our new default folder-hook index_format:
+    //
+    //     \"%5C  %Z  %?M?%-9M&%4e/%-4E?  [S:%d]  %D  [LIST: %-16.16B]  %-30.30F (b: %6c; l: %6l) %?X?%2X&  ?  %s\""
+    //
+    // Note that in our regex, repeat operators in the form {1,N} are
+    // sometimes provided where logically we mean {1,}. The 'N' value in such
+    // cases is arbitrary, but significantly larger than any value we would
+    // expect to see in the real world. The idea is that we provide bounds to
+    // the regex. All such usages are commented.
+    //
     static ref RE_EXPECTED_PATTERN: Regex
         = Regex::new( r##"(?x)  # enable "significant whitespace" mode
 
-            ^([[:space:]]*[[:digit:]]{1,}[[:space:]]{1,}[^\[]{1,})  # capture group 1
-            ([\[]S:)                                                # capture group 2
-            (                                                       # capture group 3 (start of)
+            ^
+            (  # start capture group 1
 
-            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}
-            )(
-            :[[:digit:]]{1,2}
-            [\]]
-            [[:space:]]{1,}
-            )(
-            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,}[[:digit:]]{1,2}:[[:digit:]]{1,2}
-            )(
-            :[[:digit:]]{1,2}[[:space:]]{1,}
+               # '%5C' -- Leading space here is only present if the message
+               #          number is less than 10,000.
+               [[:space:]]*[[:digit:]]{1,20}    # The '20' here is just to keep it bounded
+
+               # Our fields are separated by exactly two spaces
+               [[:space:]]{2}
+
+               # '%Z' -- Always exactly three characters wide -- one or more
+               #         of which may be spaces
+               .{3}
+
+               # Our standard 2-char field separator
+               [[:space:]]{2}
             )
+
+
+            (  # start capture group 2
+
+               # %M OR %e/%E -- Field is always at least 9 chars wide -- more
+               #                if the data does not fit into that many char
+               #                cells. Whitespace can be anyplace at the
+               #                beginning or end of the value.
+               (  # capture group 3
+                  [[:space:]]*
+               )
+               (  # capture group 4
+                  [^[:space:]]{1,20}    # The '20' here is just to keep it bounded
+               )
+               (  # capture group 5
+
+                  # Regardless of how many non-whitespace chars were provided,
+                  # the value will always be followed by at least two whitespace
+                  # chars (our standard field separator), but maybe more than
+                  # that (if there were fewer than 9 non-whitespace chars in
+                  # the field value).
+                  #
+                  # '10' is the max (8 + 2). The max whitespace chars from the
+                  # field will be 8 (if the entire field value was "1" and was left
+                  # justified), plus the two for our standard field separator.
+                  #
+                  [[:space:]]{2,10}
+               )
+            )
+
+            ([\[]S:)                                                # capture group 6
+
+            (                                                       # capture group 7 (start of)
+            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,500}[[:digit:]]{1,2}:[[:digit:]]{1,2}  # 500 provides bound
+            )(
+             :[[:digit:]]{1,2}
+             [\]]
+             [[:space:]]{1,500}  # 500 provides bound
+             )(
+            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,500}[[:digit:]]{1,2}:[[:digit:]]{1,2}  # 500 provides bound
+            )(
+            :[[:digit:]]{1,2}[[:space:]]{1,500}  # 500 provides bound
+            )
+
             [\[]LIST:
-            ([[:space:]]*[^\]]{1,})
+            ([[:space:]]*[^\]]{1,500})  # 500 provides bound
             [\]]
             (
-            [[:space:]]{1,}.*)
+            [[:space:]]{1,500}.*)  # 500 provides bound
         "## ).unwrap();
 }
 
@@ -113,20 +171,35 @@ fn main() {
 
     let caps: Captures = captures.unwrap();
 
-    let whatev1 = &caps[1];
-    let whatev2 = &caps[2];     // "[S:"
+// // DEBUG go
+//     eprintln!("DEBUG: caps: {:#?}", caps);
+// // DEBUG end
 
-    let dt_lft  = &caps[3];
+    let whatev1  = &caps[1];
 
-    let whatev3 = &caps[4];     // seconds portion of left-hand date, closing bracket, plus spaces
+    // 2 (3 4 5)  -- 2 is just for debug grouping
+    //               3 and 5 are both whitespace
+    //               4 has our data (%M or %e/%E expando output)
+    let tcnm_lft  = &caps[3];
+    let thread_cnt_or_n_of_m = match &caps[4] {  // ex: "17" OR "3/5"
+        "1/1" => "   ",   // uninteresting value (clutters display), so we hide it
+        val   => val,
+    };
+    let tcnm_rit  = &caps[5];
 
-    let dt_rit  = &caps[5];
+    let whatev2  = &caps[6];    // "[S:"
 
-    let whatev4 = &caps[6];     // seconds portion of right-hand date, closing bracket, plus spaces
+    let dt_lft  = &caps[7];
 
-    let listnm_raw = &caps[7];  // list name (or mail file name, such as 'ads'), possibly surrounded by whitespace
+    let whatev3 = &caps[8];     // seconds portion of left-hand date, closing bracket, plus spaces
 
-    let whatev5 = &caps[8];     // the rest of the index format line
+    let dt_rit  = &caps[9];
+
+    let whatev4 = &caps[10];     // seconds portion of right-hand date, closing bracket, plus spaces
+
+    let listnm_raw = &caps[11];  // list name (or mail file name, such as 'ads'), possibly surrounded by whitespace
+
+    let whatev5 = &caps[12];     // the rest of the index format line
 
     let mut outp_string = String::with_capacity( orig_string.len() );
 
@@ -159,7 +232,9 @@ fn main() {
 
         // Note that position parameters to format! cannot come after named
         // parameters, hence the ordering...
-        outp_string.push_str( &format!( "{}{:width$}{}{}", whatev1, "", dt_rit, whatev4,
+        outp_string.push_str( &format!( "{}{}{}{}{:width$}{}{}", whatev1,
+                                        tcnm_lft, thread_cnt_or_n_of_m, tcnm_rit,
+                                        "", dt_rit, whatev4,
                                         width=count_of_needed_spaces ) );
     }
     else
@@ -173,6 +248,11 @@ fn main() {
         // Reconstruct original input string through the right-hand date portion.
         //
         outp_string.push_str( whatev1 );
+
+        outp_string.push_str( tcnm_lft );
+        outp_string.push_str( thread_cnt_or_n_of_m );
+        outp_string.push_str( tcnm_rit );
+
         outp_string.push_str( whatev2 );
         outp_string.push_str( dt_lft  );
         outp_string.push_str( whatev3 );
