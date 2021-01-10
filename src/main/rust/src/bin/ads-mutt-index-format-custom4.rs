@@ -74,7 +74,7 @@ lazy_static! {
 
                # '%5C' -- Leading space here is only present if the message
                #          number is less than 10,000.
-               [[:space:]]*[[:digit:]]{1,20}    # The '20' here is just to keep it bounded
+               [[:space:]]*[[:digit:]]{1,15}    # The '15' here is just to keep it bounded
 
                # Our fields are separated by exactly two spaces
                [[:space:]]{2}
@@ -98,7 +98,7 @@ lazy_static! {
                   [[:space:]]*
                )
                (  # capture group 4
-                  [^[:space:]]{1,20}    # The '20' here is just to keep it bounded
+                  [^[:space:]]{1,15}    # The '15' here is just to keep it bounded
                )
                (  # capture group 5
 
@@ -119,19 +119,19 @@ lazy_static! {
             ([\[]S:)                                                # capture group 6
 
             (                                                       # capture group 7 (start of)
-            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,500}[[:digit:]]{1,2}:[[:digit:]]{1,2}  # 500 provides bound
+            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,10}[[:digit:]]{1,2}:[[:digit:]]{1,2}  # 10 provides bound
             )(
              :[[:digit:]]{1,2}
              [\]]
              [[:space:]]{1,500}  # 500 provides bound
              )(
-            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,500}[[:digit:]]{1,2}:[[:digit:]]{1,2}  # 500 provides bound
+            [[:digit:]]{4}\-[[:digit:]]{1,2}\-[[:digit:]]{1,2}[[:space:]]{1,10}[[:digit:]]{1,2}:[[:digit:]]{1,2}  # 10 provides bound
             )(
-            :[[:digit:]]{1,2}[[:space:]]{1,500}  # 500 provides bound
+            :[[:digit:]]{1,2}[[:space:]]{1,10}  # 10 provides bound
             )
 
             [\[]LIST:
-            ([[:space:]]*[^\]]{1,500})  # 500 provides bound
+            ([[:space:]]*[^\]]{1,50})  # 50 provides bound
             [\]]
             (
             [[:space:]]{1,500}.*)  # 500 provides bound
